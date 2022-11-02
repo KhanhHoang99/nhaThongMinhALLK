@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home</title>
+    <style>
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            /* w-60 - h-34 */
+            width: 120px;
+            height: 68px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+                /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+             /* w-26 - h-26 */
+            height: 52px;
+            width: 52px;
+            /* left: 4px bottom: 4px */
+            left: 8px;
+            bottom: 8px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            /* translateX 26px */
+            -webkit-transform: translateX(52px);
+            -ms-transform: translateX(52px);
+            transform: translateX(52px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 3px 1px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* containner */ 
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.925);
+            padding: 30px 0;
+            min-height: 100vh;
+            text-align: center;
+            position: relative;
+        }
+
+        .container h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .container h1.light {
+            color: black;
+        }
+
+        .container .tempoary {
+            color: white;
+            margin-top: 20px;
+            font-size: 25px;
+        }
+
+        .equipment-group {
+            max-width: 500px;
+            border: 1px solid white;
+            margin: 0 auto; 
+            padding: 0 20px;
+        }
+
+        .equipment-group.light {
+            /* border: 1px solid black;  */
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+
+        .btn-group {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        
+        .show {
+            padding: 15px;
+        }
+
+        p {
+            font-size: 30px;
+            color: white;
+            padding-top: 10px;
+            margin-right: 10px;
+        }
+
+        p.light {
+            color: black;
+            transition: all linear 0.5s;
+        }
+
+        .dark-light {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container.light {
+            background-color: white;
+            transition: all linear 0.3s;
+        }
+
+    </style>
+</head>
+
+<body onload=UpdateData()> 
+    
+    <div class="container">
+        <h1 class="title">ALLK</h1>
+
+        <div class="equipment-group">
+            <div class="btn-group">
+                <p>Đèn 1</p>
+                <label class="switch">
+                    <input type="checkbox" id="thietbi1">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="btn-group">
+                <p>Máy Quạt</p>
+                <label class="switch">
+                    <input type="checkbox" id="thietbi2">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="btn-group">
+                <p>Cửa Sổ</p>
+                <label class="switch">
+                    <input type="checkbox" id="thietbi3">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="btn-group">
+                <p>Cổng Chính</p>
+                <label class="switch">
+                    <input type="checkbox" id="thietbi4">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="show">
+                <p class="temperature">Nhiệt độ nhà hiện tại: <span class="temperature-number">50</span> <sup>0</sup> C</p>
+                <p class="humidity">Độ ẩm nhà hiện tại: <span class="humidity-number">50</span> %</p>
+            </div>
+        </div>
+
+        <div class="dark-light">
+            <p>Tối</p>
+            <label class="switch">
+                <input type="checkbox" id="change-dark-light">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <p>Đèn 1 <span class="den1">off</span></p>
+        <p>Đèn 2 <span class="den2">off</span></p>
+        <p>Đèn 3 <span class="den3">off</span></p>
+        <p>Đèn 4 <span class="den4">off</span></p>
+    </div>
+
+    <script>
+
+        // xử lý khi click vào nút trên giao diện
+        function handleClickButton (element, paramOn, paramOff) {
+            if(!element.checked) {
+                let param = paramOff;
+                const xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "/Button?Button="+param, true);
+                xhttp.send();              
+            }else {
+                let param = paramOn;
+                const xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "/Button?Button="+param, true);
+                xhttp.send();
+            }
+        }
+
+        const thietbi1 =  document.getElementById('thietbi1');
+        const thietbi2 =  document.getElementById('thietbi2');
+        const thietbi3 =  document.getElementById('thietbi3');
+        const thietbi4 =  document.getElementById('thietbi4');
+        const changeDarkLight =  document.getElementById('change-dark-light');
+
+        changeDarkLight.addEventListener('click', function(){
+            
+            const container = document.querySelector('div.container');
+            const equipmentGroup = document.querySelector('.equipment-group');
+            const pTag = document.querySelectorAll('p');
+            const h1Tag = document.querySelector('h1');
+
+            if(this.checked) {
+                container.classList.add("light");
+                pTag.forEach((function(item) {
+                item.classList.add("light");
+                }))
+                equipmentGroup.classList.add("light");
+                h1Tag.classList.add("light");
+                document.querySelector('.dark-light p').innerHTML = 'Sáng'
+            }else{
+                container.classList.remove("light");
+                pTag.forEach((function(item) {
+                item.classList.remove("light");
+                }))
+                equipmentGroup.classList.remove("light");
+                h1Tag.classList.remove("light");
+                document.querySelector('.dark-light p').innerHTML = 'Tối'
+            }
+            
+        })
+
+        thietbi1.addEventListener('click', function(){
+            handleClickButton(thietbi1, "TB1ON", "TB1OFF")
+        })
+
+        thietbi2.addEventListener('click', function(){
+            handleClickButton(thietbi2, "TB2ON", "TB2OFF")
+        })
+
+        thietbi3.addEventListener('click', function(){
+            handleClickButton(thietbi3, "TB3ON", "TB3OFF")
+        })
+
+        thietbi4.addEventListener('click', function(){
+            handleClickButton(thietbi4, "TB4ON", "TB4OFF")
+        })
+
+
+
+
+        
+
+        
+
+        function UpdateData() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    let DataVDK = JSON.parse(this.responseText);
+                    console.log("dữ liệu vdk: ", DataVDK)
+                    if(DataVDK.nhietdo){
+                        document.querySelector('.temperature-number').innerHTML = DataVDK.nhietdo;
+                    }
+                    if(DataVDK.doam){
+                        document.querySelector('.humidity-number').innerHTML = DataVDK.doam;
+                    }
+                    if(DataVDK.thietbi1){                      
+                        if(DataVDK.thietbi1 === '0') {
+                            document.querySelector('.den1').innerHTML = `off`;
+                            thietbi1.checked = false;
+                        }
+                        else{
+                            document.querySelector('.den1').innerHTML = `on`;
+                            thietbi1.checked = true;
+                        }
+                    }
+                    if(DataVDK.thietbi2){                      
+                        if(DataVDK.thietbi2 === '0') {
+                            document.querySelector('.den2').innerHTML = `off`;
+                            thietbi2.checked = false;
+                        }
+                        else{
+                            document.querySelector('.den2').innerHTML = `on`;
+                            thietbi2.checked = true;
+                        }
+                    }
+                    if(DataVDK.thietbi3){                      
+                        if(DataVDK.thietbi3 === '0') {
+                            document.querySelector('.den3').innerHTML = `off`;
+                            thietbi3.checked = false;
+                        }
+                        else{
+                            document.querySelector('.den3').innerHTML = `on`;
+                            thietbi3.checked = true;
+                        }
+                    }
+                    if(DataVDK.thietbi4){                      
+                        if(DataVDK.thietbi4 === '0') {
+                            document.querySelector('.den4').innerHTML = `off`;
+                            thietbi4.checked = false;
+                        }
+                        else{
+                            document.querySelector('.den4').innerHTML = `on`;
+                            thietbi4.checked = true;
+                        }
+                    }
+                }
+            };
+            xhttp.open("GET", "/update", true);
+            xhttp.send();
+
+            setTimeout(function() {
+                UpdateData()
+            }, 1000);
+        }
+
+    </script>
+</body>
+</html> 
+
