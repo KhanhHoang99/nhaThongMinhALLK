@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
 
         * {
@@ -124,6 +125,20 @@
             justify-content: space-between;
         }
 
+        .btn-group p {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-group.light p i {
+            color: #ffba00f5;
+        }
+
+        i {
+            font-size: 50px;
+            margin-left: 15px;
+        }
+
         
         .show {
             padding: 15px;
@@ -148,43 +163,143 @@
             align-items: center;
         }
 
+        .dark-light i.sun {
+            color: #ffba00f5;
+        }
+
         .container.light {
             background-color: white;
             transition: all linear 0.3s;
         }
 
+        /* phần form login */
+
+        .container {
+            position: relative;
+        }
+
+        #form-login {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #423f3f;
+            z-index: 11;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #form-container {
+            width: 400px;
+            padding: 77px 55px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 10px 0 rgb(0 0 0 / 10%);
+            -moz-box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
+            -webkit-box-shadow: 0 5px 10px 0 rgb(0 0 0 / 10%);
+        }
+
+        
+        .form-header {
+            font-size: 55px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        #form-container input {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.2;
+            display: block;
+            width: 100%;
+            height: 45px;
+            background: 0 0;
+            padding: 0 8px;
+            margin-top: 20px;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid #555;
+        }
+
+        #form-container button{
+            padding: 10px 15px;
+            margin-top: 40px;
+            font-size: 15px;
+            background-color: #2196F3;
+            color: white;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #2196F3;
+            border-right: 16px solid #2196F3;
+            border-bottom: 16px solid #2196F3;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+
     </style>
 </head>
 
-<body onload=UpdateData()> 
+<!-- onload=UpdateData() -->
+<body > 
     
     <div class="container">
+        <div id="form-login">
+            <form id="form-container">
+                <p class="form-header">ALLK</p>
+                <input id="user-name" type="text" placeholder="Nhập Tên Đăng nhập" required/>
+                <input id="password" type="password" placeholder="Nhập Mật Khẩu" required/>
+                <button id="btn-login">Đăng Nhập</button>
+            </form>
+            <div id="loader" style="display: none;"></div>
+        </div>
         <h1 class="title">ALLK</h1>
 
         <div class="equipment-group">
             <div class="btn-group">
-                <p>Đèn 1</p>
+                <p>Đèn <i class="fa-solid fa-lightbulb"></i></p>
                 <label class="switch">
                     <input type="checkbox" id="thietbi1">
                     <span class="slider round"></span>
                 </label>
             </div>
             <div class="btn-group">
-                <p>Máy Quạt</p>
+                <p>Điều Hòa <i class="fa-solid fa-fan"></i></p>
                 <label class="switch">
                     <input type="checkbox" id="thietbi2">
                     <span class="slider round"></span>
                 </label>
             </div>
             <div class="btn-group">
-                <p>Cửa Sổ</p>
+                <p>Cửa Sổ <i class="fa-brands fa-windows"></i></p>
                 <label class="switch">
                     <input type="checkbox" id="thietbi3">
                     <span class="slider round"></span>
                 </label>
             </div>
             <div class="btn-group">
-                <p>Cổng Chính</p>
+                <p>Cửa Chính <i class="fa-solid fa-door-closed"></i></p>
                 <label class="switch">
                     <input type="checkbox" id="thietbi4">
                     <span class="slider round"></span>
@@ -197,17 +312,13 @@
         </div>
 
         <div class="dark-light">
-            <p>Tối</p>
+            <p><i class="fa-solid fa-moon moon"></i></p>
             <label class="switch">
                 <input type="checkbox" id="change-dark-light">
                 <span class="slider round"></span>
             </label>
         </div>
 
-        <p>Đèn 1 <span class="den1">off</span></p>
-        <p>Đèn 2 <span class="den2">off</span></p>
-        <p>Đèn 3 <span class="den3">off</span></p>
-        <p>Đèn 4 <span class="den4">off</span></p>
     </div>
 
     <script>
@@ -233,6 +344,57 @@
         const thietbi4 =  document.getElementById('thietbi4');
         const changeDarkLight =  document.getElementById('change-dark-light');
 
+        const listUser = [
+            {userName: "KhanhHoang2022", password: '12345'},
+            {userName: "ThuyLinh2022", password: '12345'},
+            {userName: "QuangLinh2022", password: '12345'},
+            {userName: "CongAnh2022", password: '12345'},
+        ]
+
+        const btnLogin = document.getElementById('btn-login');
+        const userName = document.getElementById('user-name');
+        const password = document.getElementById('password');
+        const formLogin = document.getElementById('form-login');
+        const formContainer = document.getElementById('form-container');
+        const loader = document.getElementById('loader');
+        
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        
+
+        btnLogin.addEventListener('click', async function(e){
+            
+
+            if(!userName.value || !password.value) {
+                return
+            }
+           
+           const foundUserName = listUser.some(item => item.userName === userName.value);
+           const foundPassword = listUser.some(item => item.password === password.value);
+
+
+           if(foundUserName) {
+                if(foundPassword){
+                    e.preventDefault();
+
+                    // alert('Đăng nhập thành công');
+
+                    formContainer.style.display = "none";
+                    loader.style.display = "block"
+                    await delay(1000);
+
+                    formLogin.style.display = "none";
+                }else {
+                    alert("Mật Khẩu Không Đúng")
+                }
+           }else {
+                alert('Không tồn tại tên đăng nhập! vui lòng kiểm tra lại!');
+           }
+
+        })
+
         changeDarkLight.addEventListener('click', function(){
             
             const container = document.querySelector('div.container');
@@ -241,21 +403,22 @@
             const h1Tag = document.querySelector('h1');
 
             if(this.checked) {
+                console.log('hello')
                 container.classList.add("light");
                 pTag.forEach((function(item) {
                 item.classList.add("light");
-                }))
+                }));
                 equipmentGroup.classList.add("light");
                 h1Tag.classList.add("light");
-                document.querySelector('.dark-light p').innerHTML = 'Sáng'
+                document.querySelector('.dark-light p').innerHTML = `<i class="fa-solid fa-sun sun"></i>`
             }else{
                 container.classList.remove("light");
                 pTag.forEach((function(item) {
                 item.classList.remove("light");
-                }))
+                }));
                 equipmentGroup.classList.remove("light");
                 h1Tag.classList.remove("light");
-                document.querySelector('.dark-light p').innerHTML = 'Tối'
+                document.querySelector('.dark-light p').innerHTML = `<i class="fa-solid fa-moon moon"></i>`
             }
             
         })
@@ -297,41 +460,33 @@
                     }
                     if(DataVDK.thietbi1){                      
                         if(DataVDK.thietbi1 === '0') {
-                            document.querySelector('.den1').innerHTML = `off`;
                             thietbi1.checked = false;
                         }
                         else{
-                            document.querySelector('.den1').innerHTML = `on`;
                             thietbi1.checked = true;
                         }
                     }
                     if(DataVDK.thietbi2){                      
                         if(DataVDK.thietbi2 === '0') {
-                            document.querySelector('.den2').innerHTML = `off`;
                             thietbi2.checked = false;
                         }
                         else{
-                            document.querySelector('.den2').innerHTML = `on`;
                             thietbi2.checked = true;
                         }
                     }
                     if(DataVDK.thietbi3){                      
                         if(DataVDK.thietbi3 === '0') {
-                            document.querySelector('.den3').innerHTML = `off`;
                             thietbi3.checked = false;
                         }
                         else{
-                            document.querySelector('.den3').innerHTML = `on`;
                             thietbi3.checked = true;
                         }
                     }
                     if(DataVDK.thietbi4){                      
                         if(DataVDK.thietbi4 === '0') {
-                            document.querySelector('.den4').innerHTML = `off`;
                             thietbi4.checked = false;
                         }
                         else{
-                            document.querySelector('.den4').innerHTML = `on`;
                             thietbi4.checked = true;
                         }
                     }
