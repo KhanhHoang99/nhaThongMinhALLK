@@ -351,6 +351,7 @@
             {userName: "CongAnh2022", password: '12345'},
         ]
 
+        // lấy các nút, các ô trên giao diện để xử lý
         const btnLogin = document.getElementById('btn-login');
         const userName = document.getElementById('user-name');
         const password = document.getElementById('password');
@@ -363,7 +364,7 @@
         }
 
         
-
+        // xử lý khi bấm nút login
         btnLogin.addEventListener('click', async function(e){
             
 
@@ -371,10 +372,11 @@
                 return
             }
            
+            // check user
            const foundUserName = listUser.some(item => item.userName === userName.value);
            const foundPassword = listUser.some(item => item.password === password.value);
 
-
+            // nếu tìm thấy user
            if(foundUserName) {
                 if(foundPassword){
                     e.preventDefault();
@@ -395,6 +397,7 @@
 
         })
 
+        // xử lý khi click vào nút sáng tối
         changeDarkLight.addEventListener('click', function(){
             
             const container = document.querySelector('div.container');
@@ -445,7 +448,7 @@
         
 
         
-
+        // load dữ liệu
         function UpdateData() {
             const xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -495,6 +498,7 @@
             xhttp.open("GET", "/update", true);
             xhttp.send();
 
+            // 1s update dữ liệu 1 lần
             setTimeout(function() {
                 UpdateData()
             }, 1000);
